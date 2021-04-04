@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const { dbConection } = require("../databases/config");
+
 
 class Server {
     constructor() {
@@ -7,6 +9,9 @@ class Server {
         this.port = process.env.PORT;
         this.usersPath = "/api/users";
         this.defaultPath = "*";
+
+        // Connect with the database
+        this.connectionDB();
 
         // Middlewares
         this.middlewares();
@@ -20,6 +25,10 @@ class Server {
 
         // If doesnt exist a path send a 404 error
         this.app.use(this.defaultPath, require("../routes/default.route"));
+    }
+
+    async connectionDB() {
+        await dbConection();
     }
 
     middlewares() {

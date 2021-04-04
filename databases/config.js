@@ -12,7 +12,7 @@ const dbConection = async() => {
 
     } catch (error) {
         console.log(err);
-        throw new Error("Problemas en la conexión con la base de datos");
+        throw new Error("Trobble with a Data Base connection");
     }
 };
 
