@@ -1,12 +1,23 @@
-# MODELO DE API
+# API para tienda o cafetería
 
-Es un modelo de API en NodeJS, usando mongoDB y CORS. Sirve para tener montado un servidor en NodeJS en cuestión de minutos y poder modificarlo según convenga.
+Es una  de API en NodeJS, usando mongoDB. Sirve para crear los productos y los usuarios que manejarían un sistema dentro de una tienda o cafetería.
 
+Para iniciar verifique que tiene NodeJS instalado en su máquina con el comando:
 
-Para iniciar verifique que tiene NodeJS instalado en us máquina y ejecute:
+`node --version`
+
+Si tiene NodeJS instalado puede ejecutar el siguiente comando para iniciar el proyecto:
 
 `npm install`
 
-También se puede verificar el contenido con:
+Debe tener una base de datos con MongoDB y crear la ruta de conexión dentro de las variables de entorno
 
-`npn run dev`
+`process.env.MONGO_CNN_ATLAS=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
+
+Y debe configurar el puerto en la variable de entorno
+
+`process.env.PORT=XXXXX`
+
+Para iniciar el proceso puede arrancarlo en desarrollo con el comando:
+
+`npm run dev`
