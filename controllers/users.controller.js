@@ -5,26 +5,36 @@ const User = require('../models/user.models');
 const Role = require('../models/role.models');
 
 
-const usersGet = (req = request, res = response) => {
-    res.status(200).json({ method: "GET" });
+const usersGet = async(req = request, res = response) => {
+    user = await User.find();
+    res.status(200).json({ user });
 }
 
 
 const usersPost = (req = request, res = response) => {
 
-    const salt = bcryptjs.genSaltSync();
     const { name, email, password, role } = req.body
+    const salt = bcryptjs.genSaltSync();
 
     const user = new User({ name, email, password, role });
     user.password = bcryptjs.hashSync(password, salt);
-
     user.save();
+
     res.status(201).json({ user });
 }
 
 
-const usersPut = (req = request, res = response) => {
-    res.status(202).json({ method: "PUT" });
+const usersPut = async(req = request, res = response) => {
+
+    const { id } = req.params;
+    const { _id, email, ...rest } = req.body;
+    const existId = await User.findByIdAndUpdate(id, rest);
+
+    // const existId = await idExists(id)
+
+
+
+    res.status(202).json({ method: "PUT", existId });
 }
 
 
