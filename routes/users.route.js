@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { validacionCampos } = require("../middleware/validacion-campos");
+const { validateField } = require("../middleware/validate-fields");
 const {
     roleExists,
     emailExists,
@@ -27,7 +27,7 @@ router.post(
         check("email").custom(emailExists),
         check("password", "The password hasnt have 6 digits").isLength({ min: 6 }),
         check("role").custom(roleExists),
-        validacionCampos,
+        validateField,
     ],
     usersPost
 );
@@ -36,7 +36,7 @@ router.put(
     "/:id", [
         check("id", "The ID is not valid").isMongoId(),
         check("id").custom(idExists),
-        validacionCampos,
+        validateField,
     ],
     usersPut
 );

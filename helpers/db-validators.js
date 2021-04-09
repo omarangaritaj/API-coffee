@@ -13,14 +13,13 @@ const roleExists = async(role = "") => {
 const emailExists = async(email = '') => {
     const existEmail = await User.findOne({ email });
     if (existEmail) {
-        throw new Error(`The email ${email} exist`);
+        throw new Error(`The email ${email} aready exist`);
     }
 };
 
 
 const idExists = async(id = "") => {
     const existId = await User.findById(id);
-    console.log(existId);
     if (!existId) {
         throw new Error(`The id ${id} dont exist`);
     }

@@ -6,8 +6,16 @@ const Role = require('../models/role.models');
 
 
 const usersGet = async(req = request, res = response) => {
-    user = await User.find();
-    res.status(200).json({ user });
+
+    const { untilPage = 5, fromPage = 0 } = req.query;
+    const query = { state: true };
+    const [users, totalUsers] = await Promise.all([
+        User.find(query).skip(Number(fromPage)).limit(Number(untilPage)),
+        User.countDocuments(query),
+    ]);
+
+
+    res.status(200).json({ users, totalUsers });
 }
 
 
@@ -27,14 +35,14 @@ const usersPost = (req = request, res = response) => {
 const usersPut = async(req = request, res = response) => {
 
     const { id } = req.params;
-    const { _id, email, ...rest } = req.body;
-    const existId = await User.findByIdAndUpdate(id, rest);
+    const { _id, password, ...rest } = req.body;
+    if (password) {
+        const salt = bcryptjs.genSaltSync();
+        rest.password = bcryptjs.hashSync(password, salt);
+    }
+    const hasUser = await User.findByIdAndUpdate(id, rest);
 
-    // const existId = await idExists(id)
-
-
-
-    res.status(202).json({ method: "PUT", existId });
+    res.status(202).json(hasUser);
 }
 
 
@@ -44,7 +52,11 @@ const usersPatch = (req = request, res = response) => {
 
 
 const usersDelete = (req = request, res = response) => {
-    res.status(202).json({ method: "DELETE" });
+
+    const { id } = req.params;
+    const hasUser = await User.findByIdAndUpdate(id, { state: false });
+
+    res.status(202).json(hasUser);
 }
 
 const rolePost = (req = request, res = response) => {
