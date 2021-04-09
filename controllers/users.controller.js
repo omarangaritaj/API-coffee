@@ -51,13 +51,12 @@ const usersPatch = (req = request, res = response) => {
 }
 
 
-const usersDelete = (req = request, res = response) => {
-
+const usersDelete = async(req = request, res = response) => {
     const { id } = req.params;
     const hasUser = await User.findByIdAndUpdate(id, { state: false });
 
     res.status(202).json(hasUser);
-}
+};
 
 const rolePost = (req = request, res = response) => {
     let { role } = req.body;
