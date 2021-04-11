@@ -31,7 +31,10 @@ const getCategorieById = async(req = request, res = response) => {
 
 
 const createCategorie = async(req = request, res = response) => {
-    const { id } = req.user
+
+
+    //TODO Hacer que si la categoria fue borrada, activarlo nuevamente
+    const { id } = req.user;
     const { name } = req.body;
 
     const nameCapitalize = capitalize(name);
@@ -42,7 +45,11 @@ const createCategorie = async(req = request, res = response) => {
         res.status(400).json({ error: "The Categorie is already exist" });
     }
 
-    const categorie = new Categorie({ name: nameCapitalize, status: true, user: id });
+    const categorie = new Categorie({
+        name: nameCapitalize,
+        status: true,
+        user: id,
+    });
     categorie.save();
 
     res.status(201).json({ msj: "created", categorie });

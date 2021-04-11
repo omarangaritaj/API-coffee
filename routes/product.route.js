@@ -8,15 +8,20 @@ const {
     createProduct,
     updateProduct,
     deleteProduct,
-} = require("../controllers/product.controller");
+} = require("../controllers");
 
 const {
     validateField,
     validateJwt,
-    isAdminRole
+    isAdminRole,
 } = require("../middleware");
 
-const { idProductExists } = require("../helpers/db-validators");
+const {
+    idProductExists,
+    idUserExists,
+    idCategoriesExists,
+    priceGreater0,
+} = require("../helpers/db-validators");
 
 const router = Router();
 
@@ -39,6 +44,7 @@ router.post(
     "/", [
         validateJwt,
         check("name", "The name isnt empty.").not().isEmpty(),
+        check("categoryId").custom(idCategoriesExists),
         validateField,
     ],
     createProduct
@@ -49,6 +55,7 @@ router.put(
         validateJwt,
         check("id", "The ID is not valid").isMongoId(),
         check("id").custom(idProductExists),
+        check("price").custom(priceGreater0),
         check("name", "The name isnt empty.").not().isEmpty(),
         validateField,
     ],

@@ -23,25 +23,34 @@ const emailExists = async(email = '') => {
 
 
 const idUserExists = async(id = "") => {
-    const existId = await User.findById(id);
-    if (!existId) {
-        throw new Error(`The id ${id} dont exist`);
+    const existUser = await User.findById(id);
+    if (!existUser) {
+        throw new Error(`The user with id ${id} dont exist`);
     }
 };
 
 const idCategoriesExists = async(id = "") => {
-    const existId = await Categorie.findById(id);
-    if (!existId || existId.state === false) {
-        throw new Error(`The id ${id} dont exist`);
+    const existCategory = await Categorie.findById(id);
+    if (!existCategory || existCategory.state === false) {
+        throw new Error(`The category with the id ${id} dont exist`);
     }
 };
 
 const idProductExists = async(id = "") => {
-    const existId = await Product.findById(id);
-    if (!existId || existId.state === false) {
-        throw new Error(`The id ${id} dont exist`);
+    const existProduct = await Product.findById(id);
+    if (!existProduct || existProduct.state === false) {
+        throw new Error(`The Product with the id ${id} dont exist`);
     }
 };
+
+const priceGreater0 = async(price = 0) => {
+
+    if (price < 0) {
+        throw new Error(`The Price should be grater or equal of 0`);
+    }
+};
+
+
 
 
 module.exports = {
@@ -50,4 +59,5 @@ module.exports = {
     idUserExists,
     idCategoriesExists,
     idProductExists,
+    priceGreater0,
 };

@@ -5,35 +5,36 @@ const ProductSchema = Schema({
     name: {
         type: String,
         required: [true, "The name of Product is required"],
-        unique: true
+        unique: true,
     },
     state: {
         type: Boolean,
         required: true,
-        default: true
+        default: true,
     },
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
     },
     price: {
         type: Number,
-        default: 0
+        default: 0,
     },
-    categorie: {
+    category: {
         type: Schema.Types.ObjectId,
         ref: "Categorie",
-        required: true
+        required: [true, "The name of Category is required"],
     },
     available: {
         type: Boolean,
-    }
+        default: true
+    },
 });
 
 ProductSchema.methods.toJSON = function() {
-    const { __v, state, ...categorie } = this.toObject();
-    return categorie;
+    const { __v, state, ...product } = this.toObject();
+    return product;
 };
 
 module.exports = model("Product", ProductSchema);

@@ -19,7 +19,7 @@ const usersGet = async(req = request, res = response) => {
 }
 
 
-const usersPost = (req = request, res = response) => {
+const usersCreate = (req = request, res = response) => {
 
     const { name, email, password, role } = req.body
     const salt = bcryptjs.genSaltSync();
@@ -32,7 +32,9 @@ const usersPost = (req = request, res = response) => {
 }
 
 
-const usersPut = async(req = request, res = response) => {
+const usersUpdate = async(req = request, res = response) => {
+
+    //TODO Hacer que si el usuario fue borrado, activarlo nuevamente
 
     const { id } = req.params;
     const { _id, password, ...rest } = req.body;
@@ -43,11 +45,6 @@ const usersPut = async(req = request, res = response) => {
     const hasUser = await User.findByIdAndUpdate(id, rest);
 
     res.status(202).json(hasUser);
-}
-
-
-const usersPatch = (req = request, res = response) => {
-    res.status(202).json({ method: "PATCH" });
 }
 
 
@@ -68,9 +65,8 @@ const rolePost = (req = request, res = response) => {
 
 module.exports = {
     usersGet,
-    usersPost,
-    usersPut,
-    usersPatch,
+    usersCreate,
+    usersUpdate,
     usersDelete,
     rolePost
 };

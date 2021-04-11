@@ -11,12 +11,11 @@ const {
 } = require("../helpers/db-validators");
 const {
     usersGet,
-    usersPost,
-    usersPut,
-    usersPatch,
+    usersCreate,
+    usersUpdate,
     usersDelete,
-    rolePost
-} = require('../controllers/users.controller');
+    rolePost,
+} = require("../controllers/users.controller");
 
 
 
@@ -36,7 +35,7 @@ router.post(
         check("role").custom(roleExists),
         validateField,
     ],
-    usersPost
+    usersCreate
 );
 
 router.put(
@@ -45,7 +44,7 @@ router.put(
         check("id").custom(idUserExists),
         validateField,
     ],
-    usersPut
+    usersUpdate
 );
 
 router.delete(
