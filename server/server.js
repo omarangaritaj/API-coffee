@@ -9,8 +9,9 @@ class Server {
         this.port = process.env.PORT;
 
         this.authPath = "/api/auth";
-        this.usersPath = "/api/users";
         this.categoriesPath = "/api/categories";
+        this.productPath = "/api/products";
+        this.usersPath = "/api/users";
         this.defaultPath = "*";
 
         // Connect with the database
@@ -25,8 +26,9 @@ class Server {
 
     routes() {
         this.app.use(this.authPath, require("../routes/auth.route"));
-        this.app.use(this.usersPath, require("../routes/users.route"));
         this.app.use(this.categoriesPath, require("../routes/categories.route"));
+        this.app.use(this.productPath, require("../routes/product.route"));
+        this.app.use(this.usersPath, require("../routes/users.route"));
 
         // If doesnt exist a path send a 404 error
         this.app.use(this.defaultPath, require("../routes/default.route"));

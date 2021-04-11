@@ -1,78 +1,81 @@
 const { response, request } = require("express");
-const { Categorie } = require('../models');
+const { Product } = require("../models");
 const { capitalize } = require('../helpers/capitalize')
 
 
-const getCategories = async(req = request, res = response) => {
+const getProducts = async(req = request, res = response) => {
 
     const { untilPage = 10, fromPage = 0 } = req.query;
     const query = { state: true };
-    const [categories, totalCategories] = await Promise.all([
+    const [products, totalProducts] = await Promise.all([
 
-        Categorie.find(query)
-        .populate('user', 'name')
+        Product.find(query)
+        .populate('user', 'categorie', 'name')
         .skip(Number(fromPage))
         .limit(Number(untilPage)),
-        Categorie.countDocuments(query),
+        Product.countDocuments(query),
     ]);
 
-    res.status(200).json({ categories, totalCategories });
+    res.status(200).json({ products, totalProducts });
 };
 
 
-const getCategorieById = async(req = request, res = response) => {
+const getProductById = async(req = request, res = response) => {
 
     const { id } = req.params;
-    const categorieDB = await Categorie.findById(id)
-        .populate('user', 'name');
+    const categorieDB = await Product.findById(id).populate(
+        "user",
+        "categorie",
+        "name"
+    );
 
     res.status(200).json(categorieDB);
 };
 
 
-const createCategorie = async(req = request, res = response) => {
+const createProduct = async(req = request, res = response) => {
     const { id } = req.user
     const { name } = req.body;
 
     const nameCapitalize = capitalize(name);
 
-    const categorieDB = await Categorie.findOne({ name: nameCapitalize });
+    const productDB = await Product.findOne({ name: nameCapitalize });
 
-    if (categorieDB) {
-        res.status(400).json({ error: "The Categorie is already exist" });
+    if (productDB) {
+        res.status(400).json({ error: "The Product is already exist" });
     }
 
-    const categorie = new Categorie({ name: nameCapitalize, status: true, user: id });
+    const categorie = new Product({ name: nameCapitalize, status: true, user: id });
     categorie.save();
 
     res.status(201).json({ msj: "created", categorie });
 };
 
-const updateCategorie = async(req = request, res = response) => {
+const updateProduct = async(req = request, res = response) => {
 
     const { id } = req.params
     const { state, user, ...data } = req.body
     data.name = capitalize(data.name)
     console.log(data.name);
 
-    const categorie = await Categorie.findByIdAndUpdate(id, data, { new: true });
+    const categorie = await Product.findByIdAndUpdate(id, data, { new: true });
 
-    res.status(201).json({ msj: "Updated", categorie })
+    res.status(201).json({ msj: "Updated", product });
 };
 
-const deleteCategorie = async(req = request, res = response) => {
+const deleteProduct = async(req = request, res = response) => {
 
     const { id } = req.params
 
-    const categorie = await Categorie.findByIdAndUpdate(id, { state: false }, { new: true });
+    const product = await Product.findByIdAndUpdate(id, { state: false }, { new: true });
 
-    res.status(201).json({ msj: "Deleted", categorie })
+    res.status(201).json({ msj: "Deleted", product })
 };
 
 module.exports = {
-    getCategories,
-    getCategorieById,
-    createCategorie,
-    updateCategorie,
-    deleteCategorie
+    getProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct
 };
