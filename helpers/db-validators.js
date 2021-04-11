@@ -28,7 +28,7 @@ const idUserExists = async(id = "") => {
 
 const idCategoriesExists = async(id = "") => {
     const existId = await Categorie.findById(id);
-    if (!existId) {
+    if (!existId || existId.state === false) {
         throw new Error(`The id ${id} dont exist`);
     }
 };

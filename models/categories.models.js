@@ -5,6 +5,7 @@ const CategorieSchema = Schema({
     name: {
         type: String,
         required: [true, "The name of categorie is required"],
+        unique: true
     },
     state: {
         type: Boolean,
@@ -19,7 +20,7 @@ const CategorieSchema = Schema({
 });
 
 CategorieSchema.methods.toJSON = function() {
-    const { __v, ...categorie } = this.toObject();
+    const { __v, state, ...categorie } = this.toObject();
     return categorie;
 };
 

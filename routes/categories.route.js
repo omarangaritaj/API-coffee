@@ -3,18 +3,17 @@ const { check } = require("express-validator");
 
 
 const {
-    categoriesGet,
-    categorieByIdGet,
-    categoriePost,
-    categoriePut,
-    categorieDelete,
+    getCategories,
+    getCategorieById,
+    createCategorie,
+    updateCategorie,
+    deleteCategorie,
 } = require("../controllers/categories.controller");
 
 const {
     validateField,
     validateJwt,
-    isAdminRole,
-    hasRole,
+    isAdminRole
 } = require("../middleware");
 
 const { idCategoriesExists } = require("../helpers/db-validators");
@@ -25,9 +24,16 @@ const router = Router();
  * {{url}}/api/categories
  */
 
-router.get("/", categoriesGet);
+router.get("/", getCategories);
 
-router.get("/:id", categorieByIdGet);
+router.get(
+    "/:id", [
+        check("id", "The ID is not valid").isMongoId(),
+        check("id").custom(idCategoriesExists),
+        validateField,
+    ],
+    getCategorieById
+);
 
 router.post(
     "/", [
@@ -35,7 +41,7 @@ router.post(
         check("name", "The name isnt empty.").not().isEmpty(),
         validateField,
     ],
-    categoriePost
+    createCategorie
 );
 
 router.put(
@@ -43,9 +49,10 @@ router.put(
         validateJwt,
         check("id", "The ID is not valid").isMongoId(),
         check("id").custom(idCategoriesExists),
+        check("name", "The name isnt empty.").not().isEmpty(),
         validateField,
     ],
-    categoriePut
+    updateCategorie
 );
 
 router.delete(
@@ -56,7 +63,7 @@ router.delete(
         check("id").custom(idCategoriesExists),
         validateField,
     ],
-    categorieDelete
+    deleteCategorie
 );
 
 
