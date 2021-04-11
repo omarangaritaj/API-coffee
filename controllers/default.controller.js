@@ -2,7 +2,7 @@ const { response, request } = require('express')
 
 
 const defaultAll = (req = request, res = response) => {
-    res.status(404).json({ method: "Not Found" });
+    res.status(404).json({ error: "Not Found" });
 }
 
 

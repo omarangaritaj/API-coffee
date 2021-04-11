@@ -4,11 +4,13 @@ const { request, response } = require('express');
 const User = require("../models/user.models");
 
 
-const errorMsj = (message, codeStatus) => {
-    res.status(codeStatus).json({ msg: message });
-}
 
 const validateJwt = async(req = request, res = response, next) => {
+
+    const errorMsj = (message, codeStatus) => {
+        res.status(codeStatus).json({ msg: message });
+    }
+
 
     const token = req.header('x-token');
 

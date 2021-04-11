@@ -7,7 +7,7 @@ const { validateField, validateJwt, isAdminRole, hasRole } = require('../middlew
 const {
     roleExists,
     emailExists,
-    idExists
+    idUserExists
 } = require("../helpers/db-validators");
 const {
     usersGet,
@@ -42,13 +42,11 @@ router.post(
 router.put(
     "/:id", [
         check("id", "The ID is not valid").isMongoId(),
-        check("id").custom(idExists),
+        check("id").custom(idUserExists),
         validateField,
     ],
     usersPut
 );
-
-router.patch("/:id", usersPatch);
 
 router.delete(
     "/:id", [
@@ -56,7 +54,7 @@ router.delete(
         // isAdminRole,
         hasRole('ADMIN_ROLE', 'VENTAS_ROLE'),
         check("id", "The ID is not valid").isMongoId(),
-        check("id").custom(idExists),
+        check("id").custom(idUserExists),
         validateField,
     ],
     usersDelete
