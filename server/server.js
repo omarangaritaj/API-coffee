@@ -10,6 +10,7 @@ class Server {
 
         this.authPath = "/api/auth";
         this.usersPath = "/api/users";
+        this.categoriesPath = "/api/categories";
         this.defaultPath = "*";
 
         // Connect with the database
@@ -25,6 +26,7 @@ class Server {
     routes() {
         this.app.use(this.authPath, require("../routes/auth.route"));
         this.app.use(this.usersPath, require("../routes/users.route"));
+        this.app.use(this.categoriesPath, require("../routes/categories.route"));
 
         // If doesnt exist a path send a 404 error
         this.app.use(this.defaultPath, require("../routes/default.route"));

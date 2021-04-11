@@ -22,6 +22,10 @@ const {
 
 const router = Router();
 
+/**
+ * {{url}}/api/users
+ */
+
 router.get("/", usersGet);
 
 router.post(

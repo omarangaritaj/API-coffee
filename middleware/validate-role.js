@@ -16,7 +16,6 @@ const hasRole = (...resto) => {
 
     return (req = request, res = response, next) => {
 
-        console.log(resto);
         if (!resto.includes(req.user.role)) {
             return res.status(401).json({ msg: "User Unauthorized" });
         }
